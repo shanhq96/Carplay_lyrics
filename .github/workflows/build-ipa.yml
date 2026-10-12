@@ -16,11 +16,11 @@ on:
 jobs:
   build:
     # The project needs Xcode 27 (project format 110, iOS 26 SDK).
-    runs-on: macos-26
+    runs-on: xcode-27   # GitHub preview image with Xcode 27 (macos-26 only has Xcode 26)
     timeout-minutes: 40
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Select newest installed Xcode 27
         run: |
@@ -60,7 +60,7 @@ jobs:
           cd out && zip -qry CarPlayLyrics-unsigned.ipa Payload
           ls -lh CarPlayLyrics-unsigned.ipa
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: CarPlayLyrics-unsigned-ipa
           path: out/CarPlayLyrics-unsigned.ipa
@@ -68,7 +68,8 @@ jobs:
 
       - name: Upload build log on failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: xcodebuild-log
           path: xcodebuild.log
+          if-no-files-found: ignore
